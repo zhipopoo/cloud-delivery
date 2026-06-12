@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'HarmonyOS Sans', system-ui, sans-serif;
+    background: #F0F2F5;
+    color: #1E2432;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #EEF0F4; }
+  ::-webkit-scrollbar-thumb { background: #CE0E2D; border-radius: 2px; }
+
+  h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.02em; }
+}
+
+@layer components {
+  /* ══════ Card ══════ */
+  .geo-card {
+    @apply relative overflow-hidden rounded-lg border bg-white;
+    border-color: #DDE1E8;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+  }
+  .geo-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, #CE0E2D, #E6002D, #CE0E2D);
+    z-index: 1;
+  }
+
+  .geo-card-hover {
+    @apply geo-card transition-all duration-150;
+  }
+  .geo-card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(206,14,45,0.08), 0 2px 4px rgba(0,0,0,0.06);
+    border-color: #C5CAD5;
+  }
+
+  /* ══════ Badges ══════ */
+  .geo-badge {
+    @apply inline-flex items-center gap-1 rounded px-2 py-0.5 text-[11px] font-semibold;
+    background: #FFF0F2; color: #CE0E2D; border: 1px solid #FFD6DB;
+  }
+  .geo-badge-green {
+    @apply inline-flex items-center gap-1 rounded px-2 py-0.5 text-[11px] font-semibold;
+    background: #EDF7ED; color: #1B7A2B; border: 1px solid #C8E6C9;
+  }
+  .geo-badge-red {
+    @apply inline-flex items-center gap-1 rounded px-2 py-0.5 text-[11px] font-semibold;
+    background: #FFF0F2; color: #CE0E2D; border: 1px solid #FFCDD2;
+  }
+  .geo-badge-yellow {
+    @apply inline-flex items-center gap-1 rounded px-2 py-0.5 text-[11px] font-semibold;
+    background: #FFFDE7; color: #B0891E; border: 1px solid #FFF9C4;
+  }
+
+  /* ══════ Form ══════ */
+  .geo-input {
+    @apply rounded-md border px-3 py-2 text-sm bg-white outline-none transition-colors;
+    border-color: #DDE1E8; color: #1E2432;
+  }
+  .geo-input:focus {
+    border-color: #CE0E2D;
+    box-shadow: 0 0 0 3px rgba(206,14,45,0.08);
+  }
+  .geo-input::placeholder { color: #A1A8B5; }
+
+  /* ══════ Button ══════ */
+  .geo-btn-primary {
+    background: #CE0E2D; color: #fff; border: none;
+    cursor: pointer; font-weight: 600; letter-spacing: 0.02em;
+    transition: all 0.15s;
+  }
+  .geo-btn-primary:hover {
+    background: #E6002D; box-shadow: 0 2px 8px rgba(206,14,45,0.25);
+  }
+
+  /* ══════ Progress bar ══════ */
+  .progress-bar-bg {
+    @apply h-2 w-full rounded-full overflow-hidden;
+    background: #EEF0F4;
+  }
+  .progress-bar-fill {
+    @apply h-full rounded-full transition-all duration-500;
+    background: linear-gradient(90deg, #CE0E2D, #E6002D);
+  }
+
+  /* ══════ Nav Item ══════ */
+  .nav-item {
+    @apply relative flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-semibold transition-all duration-150;
+    color: #5E6573;
+  }
+  .nav-item:hover { color: #CE0E2D; background: #FFF0F2; }
+  .nav-item.active { color: #CE0E2D; background: #FFF0F2; }
+  .nav-item.active::before {
+    content: '';
+    position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 60%; background: #CE0E2D; border-radius: 0 2px 2px 0;
+  }
+
+  /* ══════ Busy bars ══════ */
+  .busy-green { background: #4CAF50; }
+  .busy-yellow { background: #F5C842; }
+  .busy-red { background: #CE0E2D; }
+
+  /* ══════ Hex grid ══════ */
+  .hex-grid {
+    background-image:
+      linear-gradient(30deg, rgba(206,14,45,0.02) 12%, transparent 12.5%, transparent 87%, rgba(206,14,45,0.02) 87.5%),
+      linear-gradient(150deg, rgba(206,14,45,0.02) 12%, transparent 12.5%, transparent 87%, rgba(206,14,45,0.02) 87.5%);
+    background-size: 48px 84px;
+    background-position: 0 0, 24px 42px;
+  }
+
+  /* ══════ Floating shapes ══════ */
+  .floating-shape {
+    position: absolute; border-radius: 50%; filter: blur(90px);
+    opacity: 0.06; pointer-events: none;
+    animation: float 10s ease-in-out infinite;
+  }
+
+  /* ══════ Glow text ══════ */
+  .glow-text {
+    background: linear-gradient(135deg, #CE0E2D, #E6002D);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* ══════ Animations ══════ */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-16px) rotate(1deg); }
+  66% { transform: translateY(8px) rotate(-1deg); }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-border {
+  0%, 100% { border-color: #DDE1E8; }
+  50% { border-color: #CE0E2D; }
+}
+
+.animate-slide-up { animation: slide-up 0.3s ease-out forwards; }
+
+/* ══════ Gaming avatar ══════ */
+.avatar-hex {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  position: relative;
+  border: 3px solid #CE0E2D;
+  box-shadow: 0 0 0 2px #fff, 0 0 12px rgba(206,14,45,0.3);
+  transition: all 0.2s;
+}
+.avatar-hex:hover {
+  box-shadow: 0 0 0 2px #fff, 0 0 20px rgba(206,14,45,0.5);
+  transform: scale(1.05);
+}
+
+/* ══════ High-density table ══════ */
+.data-table {
+  @apply w-full text-left text-xs;
+  border-collapse: collapse;
+}
+.data-table th {
+  @apply font-bold uppercase tracking-wider px-3 py-2;
+  color: #5E6573; background: #F7F8FA; border-bottom: 2px solid #DDE1E8;
+  font-size: 10px;
+}
+.data-table td {
+  @apply px-3 py-2;
+  border-bottom: 1px solid #EEF0F4;
+  color: #1E2432;
+}
+.data-table tr:hover td { background: #FFF0F2; }
