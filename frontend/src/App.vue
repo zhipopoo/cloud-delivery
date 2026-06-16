@@ -60,7 +60,7 @@ function onTeamSelect(key: string | null) {
         </div>
         <transition name="fade">
           <div v-if="!collapsed" class="flex flex-col leading-tight">
-            <span class="text-[13px] font-extrabold tracking-tight" style="color: #1E2432;">HUAWEI</span>
+            <span class="text-[13px] font-extrabold tracking-tight" style="color: #1E2432;">HUAWEI CLOUD</span>
             <span class="text-[9px] font-bold uppercase tracking-[0.12em]" style="color: #CE0E2D;">Delivery</span>
           </div>
         </transition>
