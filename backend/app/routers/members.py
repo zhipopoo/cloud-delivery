@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import Member
 from app.schemas import MemberCreate, MemberUpdate, MemberResponse
+from app.auth import require_admin
 import json
 
 router = APIRouter(prefix="/api/members", tags=["members"])
@@ -43,7 +44,7 @@ def get_member(member_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=MemberResponse)
-def create_member(data: MemberCreate, db: Session = Depends(get_db)):
+def create_member(data: MemberCreate, db: Session = Depends(get_db), _=Depends(require_admin)):
     m = Member(
         name=data.name,
         avatar_seed=data.avatar_seed,
@@ -65,7 +66,7 @@ def create_member(data: MemberCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{member_id}", response_model=MemberResponse)
-def update_member(member_id: int, data: MemberUpdate, db: Session = Depends(get_db)):
+def update_member(member_id: int, data: MemberUpdate, db: Session = Depends(get_db), _=Depends(require_admin)):
     m = db.query(Member).filter(Member.id == member_id).first()
     if not m:
         raise HTTPException(status_code=404, detail="Member not found")
@@ -93,7 +94,7 @@ def update_member(member_id: int, data: MemberUpdate, db: Session = Depends(get_
 
 
 @router.delete("/{member_id}")
-def delete_member(member_id: int, db: Session = Depends(get_db)):
+def delete_member(member_id: int, db: Session = Depends(get_db), _=Depends(require_admin)):
     m = db.query(Member).filter(Member.id == member_id).first()
     if not m:
         raise HTTPException(status_code=404, detail="Member not found")

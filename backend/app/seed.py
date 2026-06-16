@@ -1,11 +1,77 @@
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
-from app.models import Member, Project, ProjectAssignment, FanMessage
+from app.models import Member, Project, ProjectAssignment, FanMessage, Skill, CertificateTemplate, AdminUser
+from app.auth import hash_password
 import json
+
+
+def derive_skill_category(name: str) -> str:
+    mapping = {
+        # Cloud & Infra
+        "Kubernetes": "Cloud & Infra", "Docker": "Cloud & Infra", "Terraform": "Cloud & Infra",
+        "Ansible": "Cloud & Infra", "CCE": "Cloud & Infra", "Huawei Cloud": "Cloud & Infra",
+        "CI/CD": "Cloud & Infra", "Jenkins": "Cloud & Infra", "MySQL": "Cloud & Infra",
+        "Network": "Cloud & Infra", "VPC": "Cloud & Infra", "VPN": "Cloud & Infra",
+        "Cloud Migration": "Cloud & Infra", "Landingzone": "Cloud & Infra",
+        "Cloud Desktop": "Cloud & Infra", "Cloud Security": "Cloud & Infra",
+        "GaussDB": "Cloud & Infra", "CodeArts": "Cloud & Infra", "MaaS": "Cloud & Infra",
+        "Big Data": "Data & AI",
+        # Project & Process
+        "Project Governance": "Project & Process", "Risk Management": "Project & Process",
+        "Agile": "Project & Process", "SAFe": "Project & Process", "Jira": "Project & Process",
+        "Confluence": "Project & Process", "MS Project": "Project & Process",
+        "Stakeholder Management": "Project & Process",
+        # Security & Compliance
+        "Cloud Security": "Security & Compliance", "Compliance": "Security & Compliance",
+        "WAF": "Security & Compliance", "DDoS Protection": "Security & Compliance",
+        "Network Security": "Security & Compliance", "ISO 27001": "Security & Compliance",
+        # Data & AI
+        "Python": "Data & AI", "Big Data": "Data & AI", "AI Model": "Data & AI",
+        "AI": "Data & AI",
+        # Business
+        "Strategic Planning": "Business", "Client Relations": "Business",
+        "Digital Transformation": "Business", "Budget Control": "Business",
+    }
+    return mapping.get(name, "Other")
 
 
 def seed_data():
     db: Session = SessionLocal()
+
+    # ── Always seed default admin if no admin users exist ──
+    if not db.query(AdminUser).first():
+        h, salt = hash_password("admin123")
+        db.add(AdminUser(username="admin", password_hash=f"{salt}:{h}"))
+        db.commit()
+
+    # ── Seed skills + cert templates from existing member data (always if empty) ──
+    if not db.query(Skill).first() or not db.query(CertificateTemplate).first():
+        existing_members = db.query(Member).all()
+        if existing_members:
+            if not db.query(Skill).first():
+                all_skills: set[tuple[str, str]] = set()
+                for m in existing_members:
+                    skills = json.loads(m.skills) if m.skills else []
+                    for s in skills:
+                        all_skills.add((s, derive_skill_category(s)))
+                for name, cat in sorted(all_skills):
+                    db.add(Skill(name=name, category=cat))
+                db.commit()
+
+            if not db.query(CertificateTemplate).first():
+                all_certs: set[tuple[str, str]] = set()
+                for m in existing_members:
+                    certs = json.loads(m.certificates) if m.certificates else []
+                    for c in certs:
+                        all_certs.add((c["name"], c["category"]))
+                for name, cat in sorted(all_certs):
+                    db.add(CertificateTemplate(name=name, category=cat))
+                db.commit()
+
+            db.close()
+            return
+
+    # ── Skip member/project seed if data already exists ──
     if db.query(Member).first():
         db.close()
         return
@@ -221,6 +287,26 @@ def seed_data():
     for fd in fan_messages:
         fm = FanMessage(**fd)
         db.add(fm)
+
+    # ── Seed skills from member data ──
+    if not db.query(Skill).first():
+        all_skills: set[tuple[str, str]] = set()
+        for md in members_data:
+            for s in md["skills"]:
+                all_skills.add((s, derive_skill_category(s)))
+        for name, cat in sorted(all_skills):
+            db.add(Skill(name=name, category=cat))
+        db.commit()
+
+    # ── Seed certificate templates from member data ──
+    if not db.query(CertificateTemplate).first():
+        all_certs: set[tuple[str, str]] = set()
+        for md in members_data:
+            for c in md["certificates"]:
+                all_certs.add((c["name"], c["category"]))
+        for name, cat in sorted(all_certs):
+            db.add(CertificateTemplate(name=name, category=cat))
+        db.commit()
 
     db.commit()
     db.close()

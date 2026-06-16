@@ -1,22 +1,40 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useMemberStore } from '@/stores/members'
-import type { Member } from '@/types'
+import { skillsApi } from '@/api'
+import type { Member, Skill } from '@/types'
 
 const memberStore = useMemberStore()
 const selectedMember = ref<Member | null>(null)
+const apiSkills = ref<Skill[]>([])
 
 onMounted(async () => {
   await memberStore.fetchMembers()
+  try {
+    const res = await skillsApi.list()
+    apiSkills.value = res.data
+  } catch (_) { /* fall back to hardcoded */ }
 })
 
-const skillCategories: Record<string, string[]> = {
+const fallbackCategories: Record<string, string[]> = {
   'Cloud & Infra': ['Kubernetes', 'Docker', 'Terraform', 'Ansible', 'CCE', 'Huawei Cloud', 'CI/CD', 'Jenkins'],
   'Project & Process': ['Project Governance', 'Risk Management', 'Agile', 'SAFe', 'Jira', 'Confluence', 'MS Project', 'Stakeholder Management'],
   'Security & Compliance': ['Cloud Security', 'Compliance', 'WAF', 'DDoS Protection', 'Network Security', 'ISO 27001'],
   'Data & AI': ['Python', 'Big Data', 'AI Model'],
   'Business': ['Strategic Planning', 'Client Relations', 'Digital Transformation', 'Budget Control', 'Cloud Migration'],
 }
+
+const skillCategories = computed(() => {
+  if (apiSkills.value.length) {
+    const groups: Record<string, string[]> = {}
+    for (const s of apiSkills.value) {
+      if (!groups[s.category]) groups[s.category] = []
+      groups[s.category].push(s.name)
+    }
+    return groups
+  }
+  return fallbackCategories
+})
 
 function getMembersWithSkill(skill: string): Member[] {
   return memberStore.members.filter(m => m.skills.includes(skill))

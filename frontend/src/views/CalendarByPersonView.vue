@@ -60,22 +60,6 @@ function getBarStyle(assignment: Assignment, monthIdx: number) {
   }
 }
 
-const busyColors: Record<string, { bg: string }> = {
-  red: { bg: 'bg-hw-red-600/20' },
-  yellow: { bg: 'bg-hw-gold-400/30' },
-  green: { bg: 'bg-green-100' },
-}
-
-const busyLabels: Record<string, string> = {
-  red: 'Full Load', yellow: 'Moderate', green: 'Available',
-}
-
-function calcBarColor(a: Assignment, monthIdx: number): string {
-  const style = getBarStyle(a, monthIdx)
-  if (!style) return ''
-  return busyColors[style.color]?.bg || ''
-}
-
 function onBarClick(a: Assignment) { selectedEvent.value = a }
 
 function getEventAvatarUrl(): string {
@@ -101,6 +85,18 @@ const filteredItems = computed(() => {
 
 <template>
   <div class="space-y-4">
+    <!-- View Toggle -->
+    <div class="geo-card p-1 flex gap-1">
+      <router-link
+        to="/calendar/personnel"
+        class="rounded-lg px-4 py-2.5 text-sm font-medium transition-all bg-hw-blue text-gray-900 shadow-glow"
+      >By Person</router-link>
+      <router-link
+        to="/calendar/projects"
+        class="rounded-lg px-4 py-2.5 text-sm font-medium transition-all text-hw-gray-600 hover:text-gray-900 hover:bg-gray-200"
+      >By Project</router-link>
+    </div>
+
     <!-- Timeline Header -->
     <div class="geo-card p-4 animate-slide-up">
       <div class="mb-3 flex items-center justify-between flex-wrap gap-2">
@@ -140,7 +136,6 @@ const filteredItems = computed(() => {
       <!-- Timeline Grid -->
       <div class="overflow-x-auto">
         <div class="min-w-[1200px]">
-          <!-- Month Header -->
           <div class="mb-1 flex border-b pb-2" style="border-color: #DDE1E8;">
             <div class="w-52 flex-shrink-0 pr-4">
               <span class="text-[11px] font-extrabold uppercase tracking-wider text-hw-gray-500"><TeamOutlined class="mr-1" /> Member</span>
@@ -152,12 +147,10 @@ const filteredItems = computed(() => {
             </div>
           </div>
 
-          <!-- Member Rows -->
           <div class="space-y-px">
             <div v-for="{ member, assignments } in filteredItems" :key="member.id"
               class="flex items-stretch transition-colors border-b"
               style="border-color: #EEF0F4; background: #fff;">
-              <!-- Member Info -->
               <div class="w-52 flex-shrink-0 flex items-center gap-2.5 p-2.5 border-r" style="border-color: #EEF0F4; background: #F7F8FA;">
                 <div class="h-9 w-9 flex-shrink-0 rounded-full overflow-hidden border-2" style="border-color: #CE0E2D; box-shadow: 0 0 0 2px #fff, 0 0 8px rgba(206,14,45,0.25);">
                   <img :src="member.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${member.avatar_seed}`" class="h-full w-full object-cover" />
@@ -167,7 +160,6 @@ const filteredItems = computed(() => {
                   <p class="text-[10px] font-semibold text-hw-gray-500 truncate">{{ member.team }} · {{ member.role }}</p>
                 </div>
               </div>
-              <!-- Month Cells - no gap, seamless -->
               <div class="flex-1 grid grid-cols-12 relative">
                 <div v-for="month in allMonths" :key="month.idx" class="relative min-h-[72px] flex items-center border-l" style="border-color: #EEF0F4;">
                   <div v-for="a in assignments" :key="a.id">

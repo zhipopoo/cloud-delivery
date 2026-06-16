@@ -79,3 +79,20 @@ export interface UploadResult {
   url: string
   size: number
 }
+
+export interface Skill {
+  id: number
+  name: string
+  category: string
+}
+
+export interface CertificateTemplate {
+  id: number
+  name: string
+  category: string
+}
+
+export interface AdminUser {
+  id: number
+  username: string
+}

@@ -12,7 +12,7 @@ services:
       - backend-data:/app/data
       - uploads-data:/app/uploads
     environment:
-      - DATABASE_URL=sqlite:///./portal.db
+      - DATABASE_URL=sqlite:///./data/portal.db
     restart: unless-stopped
 
   frontend:

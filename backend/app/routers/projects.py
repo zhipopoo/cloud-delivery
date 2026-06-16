@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import Project, ProjectAssignment
 from app.schemas import ProjectCreate, ProjectUpdate, ProjectResponse, AssignmentCreate, AssignmentUpdate, AssignmentResponse
+from app.auth import require_admin
 
 router = APIRouter(prefix="/api/projects", tags=["projects"])
 
@@ -13,7 +14,7 @@ def list_projects(db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=ProjectResponse)
-def create_project(data: ProjectCreate, db: Session = Depends(get_db)):
+def create_project(data: ProjectCreate, db: Session = Depends(get_db), _=Depends(require_admin)):
     p = Project(**data.model_dump())
     db.add(p)
     db.commit()
@@ -22,7 +23,7 @@ def create_project(data: ProjectCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{project_id}", response_model=ProjectResponse)
-def update_project(project_id: int, data: ProjectUpdate, db: Session = Depends(get_db)):
+def update_project(project_id: int, data: ProjectUpdate, db: Session = Depends(get_db), _=Depends(require_admin)):
     p = db.query(Project).filter(Project.id == project_id).first()
     if not p:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -35,7 +36,7 @@ def update_project(project_id: int, data: ProjectUpdate, db: Session = Depends(g
 
 
 @router.delete("/{project_id}")
-def delete_project(project_id: int, db: Session = Depends(get_db)):
+def delete_project(project_id: int, db: Session = Depends(get_db), _=Depends(require_admin)):
     p = db.query(Project).filter(Project.id == project_id).first()
     if not p:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -66,7 +67,7 @@ def calendar_view(db: Session = Depends(get_db)):
 
 
 @router.post("/assign", response_model=AssignmentResponse)
-def assign_member(data: AssignmentCreate, db: Session = Depends(get_db)):
+def assign_member(data: AssignmentCreate, db: Session = Depends(get_db), _=Depends(require_admin)):
     a = ProjectAssignment(**data.model_dump())
     db.add(a)
     db.commit()
@@ -83,7 +84,7 @@ def assign_member(data: AssignmentCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/assign/{assignment_id}", response_model=AssignmentResponse)
-def update_assignment(assignment_id: int, data: AssignmentUpdate, db: Session = Depends(get_db)):
+def update_assignment(assignment_id: int, data: AssignmentUpdate, db: Session = Depends(get_db), _=Depends(require_admin)):
     a = db.query(ProjectAssignment).filter(ProjectAssignment.id == assignment_id).first()
     if not a:
         raise HTTPException(status_code=404, detail="Assignment not found")
@@ -104,7 +105,7 @@ def update_assignment(assignment_id: int, data: AssignmentUpdate, db: Session = 
 
 
 @router.delete("/assign/{assignment_id}")
-def delete_assignment(assignment_id: int, db: Session = Depends(get_db)):
+def delete_assignment(assignment_id: int, db: Session = Depends(get_db), _=Depends(require_admin)):
     a = db.query(ProjectAssignment).filter(ProjectAssignment.id == assignment_id).first()
     if not a:
         raise HTTPException(status_code=404, detail="Assignment not found")

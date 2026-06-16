@@ -58,3 +58,27 @@ class FanMessage(Base):
     author_name = Column(String(64), nullable=False)
     content = Column(Text, nullable=False)
     created_at = Column(String(32), nullable=False)
+
+
+class Skill(Base):
+    __tablename__ = "skills"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(64), unique=True, nullable=False)
+    category = Column(String(64), nullable=False)
+
+
+class CertificateTemplate(Base):
+    __tablename__ = "certificate_templates"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(128), unique=True, nullable=False)
+    category = Column(String(64), nullable=False)
+
+
+class AdminUser(Base):
+    __tablename__ = "admin_users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(64), unique=True, nullable=False)
+    password_hash = Column(String(256), nullable=False)

@@ -139,3 +139,68 @@ class FanMessageResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# ── Auth ──
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+
+class LoginResponse(BaseModel):
+    token: str
+    username: str
+
+
+# ── Admin Users ──
+class AdminUserCreate(BaseModel):
+    username: str
+    password: str
+
+
+class AdminUserResponse(BaseModel):
+    id: int
+    username: str
+
+    class Config:
+        from_attributes = True
+
+
+# ── Skills ──
+class SkillCreate(BaseModel):
+    name: str
+    category: str
+
+
+class SkillUpdate(BaseModel):
+    name: str | None = None
+    category: str | None = None
+
+
+class SkillResponse(BaseModel):
+    id: int
+    name: str
+    category: str
+
+    class Config:
+        from_attributes = True
+
+
+# ── Certificate Templates ──
+class CertTemplateCreate(BaseModel):
+    name: str
+    category: str
+
+
+class CertTemplateUpdate(BaseModel):
+    name: str | None = None
+    category: str | None = None
+
+
+class CertTemplateResponse(BaseModel):
+    id: int
+    name: str
+    category: str
+
+    class Config:
+        from_attributes = True
