@@ -200,7 +200,7 @@ const filteredItems = computed(() => {
     </div>
 
     <!-- Detail Modal -->
-    <div v-if="selectedEvent" class="fixed inset-0 z-50 flex items-center justify-center" style="background: rgba(15,19,30,0.6);" @click.self="selectedEvent = null">
+    <div v-if="selectedEvent" class="fixed inset-0 z-50 flex items-center justify-center" style="background: rgba(15,19,30,0.6);">
       <div class="geo-card w-full max-w-md p-5 animate-slide-up">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-base font-extrabold text-hw-gray-800">Assignment Detail</h3>

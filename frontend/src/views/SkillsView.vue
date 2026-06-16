@@ -64,7 +64,7 @@ const accentBars = ['bg-hw-red-600', 'bg-hw-red-400', 'bg-hw-red-500', 'bg-hw-go
     </div>
 
     <!-- Selected Member Modal -->
-    <div v-if="selectedMember" class="fixed inset-0 z-50 flex items-center justify-center" style="background: rgba(15,19,30,0.6); backdrop-filter: blur(4px);" @click.self="selectedMember = null">
+    <div v-if="selectedMember" class="fixed inset-0 z-50 flex items-center justify-center" style="background: rgba(15,19,30,0.6); backdrop-filter: blur(4px);">
       <div class="geo-card w-full max-w-lg p-5 animate-slide-up mx-4">
         <div class="flex items-start justify-between mb-4">
           <div class="flex items-center gap-3">

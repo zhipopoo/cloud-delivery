@@ -414,7 +414,6 @@ const langOptions: { key: 'cantonese' | 'english' | 'mandarin'; label: string }[
     <div
       v-if="showMemberModal"
       class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 backdrop-blur-sm py-8"
-      @click.self="showMemberModal = false"
     >
       <div class="geo-card w-full max-w-3xl p-6 animate-slide-up">
         <div class="flex items-center justify-between mb-6">
@@ -618,7 +617,6 @@ const langOptions: { key: 'cantonese' | 'english' | 'mandarin'; label: string }[
     <div
       v-if="showProjectModal"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
-      @click.self="showProjectModal = false"
     >
       <div class="geo-card w-full max-w-lg p-6 animate-slide-up">
         <div class="flex items-center justify-between mb-6">
@@ -678,7 +676,6 @@ const langOptions: { key: 'cantonese' | 'english' | 'mandarin'; label: string }[
     <div
       v-if="showAssignModal"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
-      @click.self="showAssignModal = false"
     >
       <div class="geo-card w-full max-w-md p-6 animate-slide-up">
         <div class="flex items-center justify-between mb-6">

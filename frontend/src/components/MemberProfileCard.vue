@@ -30,7 +30,7 @@ const avatarSrc = computed(() =>
 </script>
 
 <template>
-  <div class="fixed inset-0 z-50 flex items-center justify-center" style="background: rgba(15,19,30,0.6); backdrop-filter: blur(4px);" @click.self="emit('close')">
+  <div class="fixed inset-0 z-50 flex items-center justify-center" style="background: rgba(15,19,30,0.6); backdrop-filter: blur(4px);">
     <div class="geo-card w-full max-w-2xl max-h-[85vh] overflow-y-auto p-5 animate-slide-up">
       <!-- Header -->
       <div class="flex items-start justify-between mb-5">
