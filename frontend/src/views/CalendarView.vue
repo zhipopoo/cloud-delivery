@@ -81,7 +81,8 @@ function onBarClick(a: Assignment) { selectedEvent.value = a }
 function getEventAvatarUrl(): string {
   if (!selectedEvent.value) return ''
   const member = memberStore.members.find(m => m.id === selectedEvent.value!.member_id)
-  return `https://api.dicebear.com/7.x/bottts/svg?seed=${member?.avatar_seed || 'default'}`
+  if (!member) return ''
+  return member.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${member.avatar_seed || 'default'}`
 }
 
 function getEventMemberTeam(): string {

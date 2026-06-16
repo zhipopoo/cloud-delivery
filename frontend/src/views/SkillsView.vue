@@ -54,7 +54,7 @@ const accentBars = ['bg-hw-red-600', 'bg-hw-red-400', 'bg-hw-red-500', 'bg-hw-go
               @click="selectedMember = m"
             >
               <div class="h-3.5 w-3.5 rounded-full overflow-hidden border border-hw-red-200">
-                <img :src="`https://api.dicebear.com/7.x/bottts/svg?seed=${m.avatar_seed}`" class="h-full w-full" />
+                <img :src="m.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${m.avatar_seed}`" class="h-full w-full" />
               </div>
               {{ m.name.split(' ')[0] }}
             </div>

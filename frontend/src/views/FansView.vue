@@ -51,7 +51,7 @@ async function sendMessage() {
         >
           <div class="flex items-center gap-3">
             <div class="avatar-hex h-12 w-12 flex-shrink-0 overflow-hidden bg-hw-red-50">
-              <img :src="`https://api.dicebear.com/7.x/bottts/svg?seed=${m.avatar_seed}`" class="h-full w-full" />
+              <img :src="m.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${m.avatar_seed}`" class="h-full w-full" />
             </div>
             <div class="min-w-0 flex-1">
               <p class="text-sm font-bold text-gray-900">{{ m.name }}</p>

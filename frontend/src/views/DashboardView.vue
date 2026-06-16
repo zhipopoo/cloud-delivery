@@ -105,7 +105,7 @@ const busyMembers = computed(() => projectStore.calendarData.filter(a => a.busy_
           >
             <div class="avatar-hex h-10 w-10 flex-shrink-0 overflow-hidden bg-hw-red-50">
               <img
-                :src="`https://api.dicebear.com/7.x/bottts/svg?seed=${m.avatar_seed}`"
+                :src="m.photo_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${m.avatar_seed}`"
                 :alt="m.name"
                 class="h-full w-full object-cover"
               />
