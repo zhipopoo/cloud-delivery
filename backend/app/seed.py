@@ -204,8 +204,8 @@ def seed_data():
             "name": "DCI iamSmart Migration Phase 2",
             "client": "DPO",
             "description": "The \"iAM Smart\" mobile application provides a one-stop personalized digital services platform, enabling users to log in and access online services in a smarter and more convenient way using their personal mobile phones. Its English name, \"iAM Smart,\" stands for \"internet Access by Mobile in a Smart way.\" The application currently provides over 380 services to more than 3.5 million Hong Kong citizens.\n\nThis project involves migrating the \"iAM Smart\" application from the existing GCIS data center to the Huawei Base Cloud for the client, alongside undergoing an Xinchuang (Information Technology Application Innovation) transformation. Phase II of the migration entails deploying the application across the UAT, iSIT, and PROD environments.",
-            "start_date": "2026-10-03",
-            "end_date": "2026-09-30",
+            "start_date": "2026-09-30",
+            "end_date": "2026-10-03",
             "status": "active",
         },
         {

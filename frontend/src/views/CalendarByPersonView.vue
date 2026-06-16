@@ -7,7 +7,7 @@ import { CalendarOutlined, TeamOutlined } from '@ant-design/icons-vue'
 
 const projectStore = useProjectStore()
 const memberStore = useMemberStore()
-const selectedMemberId = ref<number | null>(null)
+const selectedMemberId = ref<number | undefined>(undefined)
 const selectedEvent = ref<Assignment | null>(null)
 const currentYear = ref(2026)
 
@@ -21,7 +21,7 @@ const allMonths = computed(() => {
   const months: { label: string; idx: number }[] = []
   for (let m = 1; m <= 12; m++) {
     months.push({
-      label: new Date(2026, m - 1).toLocaleString('en', { month: 'short', year: 'numeric' }),
+      label: new Date(currentYear.value, m - 1).toLocaleString('en', { month: 'short', year: 'numeric' }),
       idx: m,
     })
   }
@@ -107,8 +107,8 @@ const filteredItems = computed(() => {
           </h2>
         </div>
         <div class="flex items-center gap-2">
-          <select v-model="selectedMemberId" class="geo-input text-xs" @change="selectedMemberId = selectedMemberId ? Number(selectedMemberId) : null">
-            <option :value="null">All Members</option>
+          <select v-model="selectedMemberId" class="geo-input text-xs">
+            <option :value="undefined">All Members</option>
             <option v-for="m in memberStore.members" :key="m.id" :value="m.id">{{ m.name }}</option>
           </select>
           <div class="flex items-center gap-0.5">
