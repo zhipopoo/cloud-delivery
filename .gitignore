@@ -37,6 +37,7 @@ logs/
 
 # Database (SQLite)
 *.db
+data/
 
 # Docker volumes
 backend-data/

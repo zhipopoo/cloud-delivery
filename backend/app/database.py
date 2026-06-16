@@ -1,7 +1,11 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "sqlite:///./portal.db"
+DATABASE_URL = "sqlite:///./data/portal.db"
+
+# Ensure the data directory exists (Docker volume mount point)
+os.makedirs(os.path.join(os.path.dirname(__file__), "..", "data"), exist_ok=True)
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
